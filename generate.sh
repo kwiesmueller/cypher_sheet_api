@@ -1,0 +1,3 @@
+protoc --rust_out=./character_service/src/proto --grpc_out=./character_service/src/proto --plugin=protoc-gen-grpc=grpc_rust_plugin -I ./proto -I proto ./proto/character.proto
+protoc --rust_out=./character_service/src/proto --grpc_out=./character_service/src/proto --plugin=protoc-gen-grpc=grpc_rust_plugin -I ./proto -I proto ./proto/characters.proto
+protoc --rust_out=./character_service/src/proto --grpc_out=./character_service/src/proto --plugin=protoc-gen-grpc=grpc_rust_plugin -I ./proto -I proto ./proto/storage.proto

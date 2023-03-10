@@ -1,0 +1,3 @@
+[workspace]
+
+members = ["character_service"]
