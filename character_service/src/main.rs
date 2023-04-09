@@ -13,12 +13,17 @@ use grpcio::{
     ChannelBuilder, Environment, ResourceQuota, RpcStatus, RpcStatusCode,
     ServerBuilder, ServerCredentials,
 };
-use proto::characters_grpc::{self};
+use proto_rs::{
+    characters::{
+        ReadLatestRevision, ReadRevision, RevisionRead, WriteRevision,
+    },
+    characters_grpc::{self},
+};
 use tracing::{error, info, span, trace, Level};
 use tracing_subscriber::FmtSubscriber;
 
-use crate::proto::{
-    characters::{CharacterCreated, RevisionWritten},
+use proto_rs::{
+    characters::{CharacterCreated, CreateCharacter, RevisionWritten},
     characters_grpc::create_characters,
 };
 
@@ -31,8 +36,8 @@ impl characters_grpc::Characters for CharacterService {
     fn create(
         &mut self,
         _ctx: grpcio::RpcContext,
-        _req: proto::characters::CreateCharacter,
-        sink: grpcio::UnarySink<proto::characters::CharacterCreated>,
+        _req: CreateCharacter,
+        sink: grpcio::UnarySink<CharacterCreated>,
     ) {
         let span = span!(
             target: "character_service",
@@ -64,8 +69,8 @@ impl characters_grpc::Characters for CharacterService {
     fn write_character_revision(
         &mut self,
         _ctx: grpcio::RpcContext,
-        mut req: proto::characters::WriteRevision,
-        sink: grpcio::UnarySink<proto::characters::RevisionWritten>,
+        mut req: WriteRevision,
+        sink: grpcio::UnarySink<RevisionWritten>,
     ) {
         let span = span!(
             target: "character_service",
@@ -122,8 +127,8 @@ impl characters_grpc::Characters for CharacterService {
     fn read_character_revision(
         &mut self,
         _ctx: grpcio::RpcContext,
-        req: proto::characters::ReadRevision,
-        sink: grpcio::UnarySink<proto::characters::RevisionRead>,
+        req: ReadRevision,
+        sink: grpcio::UnarySink<RevisionRead>,
     ) {
         let span = span!(
             target: "character_service",
@@ -161,8 +166,8 @@ impl characters_grpc::Characters for CharacterService {
     fn read_latest_character_revision(
         &mut self,
         _ctx: grpcio::RpcContext,
-        req: proto::characters::ReadLatestRevision,
-        sink: grpcio::UnarySink<proto::characters::RevisionRead>,
+        req: ReadLatestRevision,
+        sink: grpcio::UnarySink<RevisionRead>,
     ) {
         let span = span!(
             target: "character_service",

@@ -1,0 +1,21 @@
+[package]
+name = "discord_bot"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies]
+serenity = { version = "0.11", default-features = false, features = [
+    "client",
+    "gateway",
+    "rustls_backend",
+    "model",
+    "collector",
+    "utils",
+] }
+tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
+dotenv = "0.15.0"
+tracing = "0.1.37"
+tracing-subscriber = "0.3.16"
+proto_rs = { path = "../proto_rs" }
+protobuf = "2.28"

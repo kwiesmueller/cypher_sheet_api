@@ -11,11 +11,10 @@ use tracing::{error, trace, warn};
 
 use crate::{
     db::errors::{Error, ErrorCode},
-    proto::{
-        character::Character, characters::RevisionRead,
-        storage::CharacterMetadata,
-    },
+    proto::storage::CharacterMetadata,
 };
+
+use proto_rs::{character::Character, characters::RevisionRead};
 
 // FileStore is a very rudimentary way for storing characters in a similar way
 // than the app already does. This is to avoid a lot of additional setup work
@@ -557,8 +556,10 @@ mod test {
 
     use crate::{
         db::{errors, file::FileStore},
-        proto::{character::Character, storage::CharacterMetadata},
+        proto::storage::CharacterMetadata,
     };
+
+    use proto_rs::character::Character;
 
     fn enable_logs() {
         let subscriber = FmtSubscriber::builder()
