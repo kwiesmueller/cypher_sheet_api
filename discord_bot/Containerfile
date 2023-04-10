@@ -1,0 +1,33 @@
+FROM docker.io/rust:1.68-bullseye as builder
+
+RUN apt-get update && apt-get install -y cmake && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src
+
+ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
+
+
+COPY proto_rs /usr/src/proto_rs
+
+COPY discord_bot/Cargo.toml Cargo.lock /usr/src/discord_bot/
+RUN \
+    mkdir /usr/src/discord_bot/src && \
+    echo 'fn main() {}' > /usr/src/discord_bot/src/main.rs
+
+WORKDIR /usr/src/discord_bot
+
+RUN cargo build --release --bin discord_bot
+
+COPY discord_bot/src /usr/src/discord_bot/src/
+
+RUN touch /usr/src/discord_bot/src/main.rs
+
+RUN cargo build --release --bin discord_bot
+
+RUN cp /usr/src/discord_bot/target/release/discord_bot /
+
+FROM docker.io/debian:bullseye-slim AS runtime 
+
+COPY --from=builder /discord_bot /
+
+CMD ["/discord_bot"]

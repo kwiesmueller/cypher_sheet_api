@@ -1,0 +1,20 @@
+[package]
+name = "env_arg_derive"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+proc-macro = true
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+syn = "2.0"
+quote = "1.0"
+clap = { version = "4.2.0", features = ["derive", "env"] }
+clap_derive = "4.2.0"
+heck = "0.4"
+synstructure = "0.13.0"
+proc-macro2 = "1"
+env_arg = { path = "../env_arg" }

@@ -1,5 +1,5 @@
-use std::env;
-
+use clap::Parser;
+use discord_bot::Options;
 use dotenv::dotenv;
 use embeds::Embedable;
 use proto_rs::character::{SharedObject, SharedObject_oneof_object};
@@ -105,9 +105,17 @@ fn shared_object_to_embed(obj: SharedObject) -> Option<CreateEmbed> {
     }
 }
 
+#[derive(Parser)]
+struct Command {
+    #[command(flatten)]
+    options: Options,
+}
+
 #[tokio::main]
 async fn main() {
     dotenv().ok();
+
+    let cmd = Command::parse();
 
     let subscriber = FmtSubscriber::builder()
         .with_max_level(Level::DEBUG)
@@ -115,15 +123,11 @@ async fn main() {
     tracing::subscriber::set_global_default(subscriber)
         .expect("setting default subscriber failed");
 
-    // Configure the client with your Discord bot token in the environment.
-    let token =
-        env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
-
     // Build our client.
     let intents = GatewayIntents::GUILD_MESSAGES
         | GatewayIntents::DIRECT_MESSAGES
         | GatewayIntents::MESSAGE_CONTENT;
-    let mut client = Client::builder(token, intents)
+    let mut client = Client::builder(cmd.options.discord_token, intents)
         .event_handler(Handler)
         .await
         .expect("Error creating client");

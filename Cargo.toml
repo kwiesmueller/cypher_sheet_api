@@ -1,3 +1,9 @@
 [workspace]
 
-members = ["character_service", "discord_bot"]
+members = [
+    "character_service",
+    "discord_bot",
+    "deploy",
+    "env_arg",
+    "env_arg_derive",
+]

@@ -243,9 +243,3 @@ fn printable_note_type(note_type: NoteType) -> String {
     }
     .to_owned()
 }
-
-// fn first_letter_uppercase(input: &str) {
-//     if let Some(first) = input.get_mut(0..1) {
-//         first.make_ascii_uppercase();
-//     }
-// }
